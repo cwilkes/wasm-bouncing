@@ -4,6 +4,7 @@ use std::fmt;
 use itertools::free::join;
 use wasm_bindgen::prelude::*;
 
+#[wasm_bindgen]
 #[derive(Debug)]
 pub struct Ball {
     x: f32,
@@ -45,6 +46,7 @@ impl fmt::Display for Ball {
     }
 }
 
+#[wasm_bindgen]
 #[derive(Debug)]
 pub struct Universe {
     width: f32,
@@ -52,9 +54,8 @@ pub struct Universe {
     projectiles: Vec<Ball>,
 }
 
-#[wasm_bindgen]
 impl Universe {
-    pub fn advance(self: &mut Self) -> Universe {
+    pub fn advance(&mut self) -> Universe {
         let mut positions: Vec<Ball> = Vec::new();
         for ball in &mut self.projectiles {
             positions.push(ball.advance(self.width, self.height));
@@ -72,16 +73,6 @@ impl Universe {
             projectiles: projectiles,
         }
     }
-}
-
-#[wasm_bindgen]
-pub fn js_new_universe() -> Universe {
-    Universe::new()
-}
-
-#[wasm_bindgen]
-pub fn js_advance(universe : Universe) -> Universe {
-    universe.advance()
 }
 
 impl fmt::Display for Universe {
