@@ -74,6 +74,16 @@ impl Universe {
     }
 }
 
+#[wasm_bindgen]
+pub fn js_new_universe() -> Universe {
+    Universe::new()
+}
+
+#[wasm_bindgen]
+pub fn js_advance(universe : Universe) -> Universe {
+    universe.advance()
+}
+
 impl fmt::Display for Universe {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         f.write_str(&join(&self.projectiles[..], &","))?;
