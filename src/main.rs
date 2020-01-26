@@ -5,7 +5,8 @@ use mylib::Universe;
 
 pub fn main() {
     let mut universe = Universe::new();
-    println!("{}", universe);
-    universe.advance();
-    println!("{}", universe);
+    for _i in 0..125 {
+        println!("{:?}", universe);
+        universe = universe.advance();
+    }
 }

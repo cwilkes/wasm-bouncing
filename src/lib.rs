@@ -2,6 +2,7 @@
 use std::fmt;
 use itertools::free::join;
 
+#[derive(Debug)]
 pub struct Ball {
     x: f32,
     y: f32,
@@ -10,25 +11,28 @@ pub struct Ball {
 }
 
 impl Ball {
-    fn advance(&mut self, width: f32, height: f32) {
-        self.x += self.dx;
-        self.y += self.dy;
-        if self.x < 0.0 {
-            self.x = -self.x;
-            self.dx = -self.dx;
+    fn advance(&mut self, width: f32, height: f32) -> Ball {
+        let mut dx = self.dx;
+        let mut dy = self.dy;
+        let mut x = self.x + dx;
+        let mut y = self.y + dy;
+        if x < 0.0 {
+            x = -x;
+            dx = -dx;
         }
-        if self.y < 0.0 {
-            self.y = -self.y;
-            self.dy = -self.dy;
+        if y < 0.0 {
+            y = -y;
+            dy = -dy;
         }
-        if self.x >= width {
-            self.x = width - (self.x - width);
-            self.dx = -self.dx;
+        if x >= width {
+            x = width - (x - width);
+            dx = -dx;
         }
-        if self.y >= height {
-            self.y = height - (self.y - height);
-            self.dy = -self.dy;
+        if y >= height {
+            y = height - (y - height);
+            dy = -dy;
         }
+        Ball{x:x, y:y, dx:dx, dy:dy}
     }
 }
 
@@ -38,6 +42,7 @@ impl fmt::Display for Ball {
     }
 }
 
+#[derive(Debug)]
 pub struct Universe {
     width: f32,
     height: f32,
@@ -45,15 +50,17 @@ pub struct Universe {
 }
 
 impl Universe {
-    pub fn advance(self: &mut Self) {
+    pub fn advance(self: &mut Self) -> Universe {
+        let mut positions: Vec<Ball> = Vec::new();
         for ball in &mut self.projectiles {
-            ball.advance(self.width, self.height);
+            positions.push(ball.advance(self.width, self.height));
         }
+        Universe{width: self.width, height: self.height, projectiles: positions}
     }
 
     pub fn new() -> Universe {
         let mut balls: Vec<Ball> = Vec::new();
-        balls.push(Ball { x: 0.0, y: 0.0, dx: 5.0, dy: -7.0 });
+        balls.push(Ball { x: 0.0, y: 0.0, dx: 6.0, dy: -7.0 });
         balls.push(Ball { x: 50.0, y: 70.0, dx: -2.0, dy: 3.0 });
         Universe {
             width: 100.0,
