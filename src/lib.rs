@@ -1,6 +1,8 @@
+extern crate wasm_bindgen;
 
 use std::fmt;
 use itertools::free::join;
+use wasm_bindgen::prelude::*;
 
 #[derive(Debug)]
 pub struct Ball {
@@ -10,6 +12,7 @@ pub struct Ball {
     dy: f32,
 }
 
+#[wasm_bindgen]
 impl Ball {
     fn advance(&mut self, width: f32, height: f32) -> Ball {
         let mut dx = self.dx;
@@ -32,7 +35,7 @@ impl Ball {
             y = height - (y - height);
             dy = -dy;
         }
-        Ball{x:x, y:y, dx:dx, dy:dy}
+        Ball { x: x, y: y, dx: dx, dy: dy }
     }
 }
 
@@ -49,23 +52,24 @@ pub struct Universe {
     projectiles: Vec<Ball>,
 }
 
+#[wasm_bindgen]
 impl Universe {
     pub fn advance(self: &mut Self) -> Universe {
         let mut positions: Vec<Ball> = Vec::new();
         for ball in &mut self.projectiles {
             positions.push(ball.advance(self.width, self.height));
         }
-        Universe{width: self.width, height: self.height, projectiles: positions}
+        Universe { width: self.width, height: self.height, projectiles: positions }
     }
 
     pub fn new() -> Universe {
-        let mut balls: Vec<Ball> = Vec::new();
-        balls.push(Ball { x: 0.0, y: 0.0, dx: 6.0, dy: -7.0 });
-        balls.push(Ball { x: 50.0, y: 70.0, dx: -2.0, dy: 3.0 });
+        let mut projectiles: Vec<Ball> = Vec::new();
+        projectiles.push(Ball { x: 0.0, y: 0.0, dx: 6.0, dy: -7.0 });
+        projectiles.push(Ball { x: 50.0, y: 70.0, dx: -2.0, dy: 3.0 });
         Universe {
             width: 100.0,
             height: 200.0,
-            projectiles: balls,
+            projectiles: projectiles,
         }
     }
 }

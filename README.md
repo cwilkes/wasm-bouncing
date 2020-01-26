@@ -19,7 +19,45 @@
 
 ## Chris
 
-```cargo generate --git https://github.com/rustwasm/wasm-pack-template```
+```cargo generate --git https://github.com/rustwasm/wasm-pack-template
+cargo install cargo-wasm
+cargo wasm setup
+
+
+   Compiling bouncingball v0.1.0 (/Users/cwilkes/Documents/workspace/bouncingball)
+error[E0401]: can't use generic parameters from outer function
+  --> src/lib.rs:57:31
+   |
+56 | impl Universe {
+   | ---- `Self` type implicitly declared here, by this `impl`
+57 |     pub fn advance(self: &mut Self) -> Universe {
+   |                               ^^^^
+   |                               |
+   |                               use of generic parameter from outer function
+   |                               use a type here instead
+
+error[E0277]: the trait bound `Universe: wasm_bindgen::convert::IntoWasmAbi` is not satisfied
+  --> src/lib.rs:55:1
+   |
+55 | #[wasm_bindgen]
+   | ^^^^^^^^^^^^^^^ the trait `wasm_bindgen::convert::IntoWasmAbi` is not implemented for `Universe`
+   |
+   = note: required because of the requirements on the impl of `wasm_bindgen::convert::ReturnWasmAbi` for `Universe`
+
+error[E0277]: the trait bound `Universe: wasm_bindgen::convert::IntoWasmAbi` is not satisfied
+  --> src/lib.rs:55:1
+   |
+55 | #[wasm_bindgen]
+   | ^^^^^^^^^^^^^^^ the trait `wasm_bindgen::convert::IntoWasmAbi` is not implemented for `Universe`
+   |
+   = note: required because of the requirements on the impl of `wasm_bindgen::convert::ReturnWasmAbi` for `Universe`
+
+error: aborting due to 3 previous errors
+
+
+```
+
+https://developer.mozilla.org/en-US/docs/WebAssembly/Rust_to_wasm
 
 ## About
 
